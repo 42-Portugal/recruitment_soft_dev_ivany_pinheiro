@@ -5,7 +5,7 @@ import uuid
 
 # Model Project
 class Project(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
@@ -14,7 +14,7 @@ class Project(models.Model):
     
 # Model Category
 class Category(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
@@ -29,7 +29,7 @@ class Task (models.Model):
         IN_PROGRESS = "in_progress", "In Progress"
         DONE = "done", "Done"
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     status = models.CharField(

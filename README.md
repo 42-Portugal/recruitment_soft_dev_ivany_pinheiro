@@ -24,7 +24,7 @@ docker compose up -d
 docker compose run todo migrate
 ```
 > [!TIP]
-> Pode ser criado um superusuário (opcional): `docker compose run todo createsuperuser`
+> Pode ser criado um superusuário (opcional): `docker compose run --rm todo createsuperuser`
 
 
 ## 🖥️ **Como Rodar o Projeto (sem Docker)**
