@@ -27,8 +27,22 @@ class TaskSerializer(serializers.ModelSerializer):
     categories = CategoryNestedSerializer(many=True, read_only=True) # GET nested representation
 
     # POST/PUT fields
-    project_id = serializers.IntegerField(write_only=True)
-    categories_ids = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+    # project_id = serializers.IntegerField(write_only=True)
+    # categories_ids = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+    project_id = serializers.PrimaryKeyRelatedField(
+        queryset=Project.objects.all(),
+        source='project',
+        write_only=True,
+        required=False
+    )
+
+    categories_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        many=True,
+        source='categories',
+        write_only=True,
+        required=False
+    )
 
     class Meta:
         model = Task
@@ -41,20 +55,25 @@ class TaskSerializer(serializers.ModelSerializer):
 
     # POST method
     def create(self, validated_data):
-        categories_ids = validated_data.pop('categories_ids', [])
-        project_id = validated_data.pop('project_id')
+        categories = validated_data.pop('categories', [])
+        project = validated_data.pop('project', None)
 
-        task = Task.objects.create(project_id=project_id, **validated_data) # task object creation
-        task.categories.set(categories_ids)
+        task = Task.objects.create(project=project, **validated_data) # task object creation
+        task.categories.set(categories)
 
         return task
 
     # PUT/PATCH method
     def update(self, instance, validated_data):
-        if 'project_id' in validated_data:
-            instance.project_id = validated_data.pop('project_id')
+        categories = validated_data.pop('categories', None)
+        project = validated_data.pop('project', None)
 
-        if 'categories_ids' in validated_data:
-            instance.categories.set(validated_data.pop('categories_ids'))
+        if project is not None:
+            instance.project = project
 
-        return super().update(instance, validated_data) # Update other fields
+        super().update(instance, validated_data) # Update other fields
+
+        if categories is not None:
+            instance.categories.set(categories)
+
+        return instance
