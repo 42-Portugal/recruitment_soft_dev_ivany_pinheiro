@@ -16,7 +16,7 @@ class TaskSerializer(serializers.ModelSerializer):
     project = ProjectSerializer(read_only=True) # GET nested representation
     categories = CategorySerializer(many=True, read_only=True) # GET nested representation
 
-    # POST/PUT/PATCH fields
+    # POST/PUT fields
     project_id = serializers.UUIDField(write_only=True)
     categories_ids = serializers.ListField(
         child=serializers.UUIDField(), write_only=True
@@ -28,7 +28,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'id', 'title', 'description', 'status', 'due_date',
             'project', 'project_id',
             'categories', 'categories_ids',
-            'created_at', 'updated_at', 'completed_at'
+            'created_at', 'updated_at',
         ]
 
     # POST method
