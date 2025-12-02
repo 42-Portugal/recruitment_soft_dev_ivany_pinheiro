@@ -1,0 +1,10 @@
+# Phyton venv
+venv/
+__pycache__/
+*.pyc
+
+# DB files
+*.sqlite3
+
+# MacOS
+.DS_Store
