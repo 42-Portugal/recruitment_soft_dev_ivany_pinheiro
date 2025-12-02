@@ -6,21 +6,29 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = ['id', 'title', 'description']
 
+class ProjectNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['title', 'description']
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
 
+class CategoryNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name']
+
 class TaskSerializer(serializers.ModelSerializer):
     # GET fields
-    project = ProjectSerializer(read_only=True) # GET nested representation
-    categories = CategorySerializer(many=True, read_only=True) # GET nested representation
+    project = ProjectNestedSerializer(read_only=True) # GET nested representation
+    categories = CategoryNestedSerializer(many=True, read_only=True) # GET nested representation
 
     # POST/PUT fields
-    project_id = serializers.UUIDField(write_only=True)
-    categories_ids = serializers.ListField(
-        child=serializers.UUIDField(), write_only=True
-    )
+    project_id = serializers.IntegerField(write_only=True)
+    categories_ids = serializers.ListField(child=serializers.IntegerField(), write_only=True)
 
     class Meta:
         model = Task
