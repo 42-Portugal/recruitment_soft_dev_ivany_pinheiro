@@ -8,7 +8,8 @@ Pré-requisitos:
 ### 🔧 **Subir o servidor**
 
 ```bash
-docker compose up --build
+docker compose build
+docker compose up -d
 ```
 
 >[!IMPORTANT]

@@ -1,8 +1,9 @@
 services:
   todo:
+    image: todo-api
     container_name: todo-api
     build: .
-    volumes:
-      - .:/app
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
